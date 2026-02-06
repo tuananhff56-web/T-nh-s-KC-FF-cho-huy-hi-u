@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KC FF Discount Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(2, 6, 23, 0.9);
+      padding: 24px;
+      border-radius: 22px;
+      box-shadow: 0 0 25px #22c55e55, 0 0 60px #38bdf855 inset;
+      width: 440px;
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 16px;
+      text-align: center;
+      color: #22c55e;
+      text-shadow: 0 0 10px #22c55e;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      background: #020617;
+      color: #e2e8f0;
+      box-shadow: 0 0 6px #38bdf855 inset;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 10px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      color: #020617;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 0 12px #22c55eaa;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 18px #38bdf8;
+    }
+
+    .event-count {
+      margin-top: 14px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subheading {
+      margin-top: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #38bdf8;
+      text-shadow: 0 0 8px #38bdf8;
+    }
+
+    .months {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .months select.best {
+      outline: 2px solid #22c55e;
+      background: #052e16;
+      color: #bbf7d0;
+      box-shadow: 0 0 10px #22c55e;
+    }
+
+    .result {
+      margin-top: 18px;
+      border: 1px solid #334155;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 0 20px #38bdf844 inset;
+    }
+
+    .bar {
+      margin-top: 12px;
+      height: 14px;
+      background: #020617;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #38bdf855 inset;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      box-shadow: 0 0 12px #22c55e, 0 0 24px #38bdf8;
+      transition: width 0.7s ease;
+    }
+
+    .minmax {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+
+    .diamond {
+      position: absolute;
+      top: -18px;
+      right: 0;
+      font-size: 18px;
+      animation: float 1.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-6px); }
+    }
+    #diamondContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.diamond {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(145deg, #7df9ff, #00c3ff);
+  transform: rotate(45deg);
+  animation: fall 1.5s linear forwards;
+  border-radius: 2px;
+  box-shadow: 0 0 8px #7df9ff;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-20px) rotate(0deg) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg) scale(1.2);
+    opacity: 0;
+  }
+}
+  #diamondCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== CONTACT FLOAT FREE FIRE ===== */
+.ff-contact-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 14px;
+  border-radius: 14px;
+
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid #00ffe5;
+
+  box-shadow:
+    0 0 10px #00ffe5,
+    inset 0 0 12px rgba(0,255,229,0.3);
+
+  backdrop-filter: blur(6px);
+}
+
+/* chữ nhỏ bên trái */
+.ff-contact-text {
+  color: #00ffe5;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+/* icon mail phát sáng */
+.ff-contact-mail {
+  text-decoration: none;
+  font-size: 18px;
+  color: #00ffe5;
+
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #00ffe5;
+
+  box-shadow:
+    0 0 8px #00ffe5,
+    inset 0 0 10px rgba(0,255,229,0.4);
+
+  transition: 0.25s ease;
+}
+
+/* hover glow kiểu game */
+.ff-contact-mail:hover {
+  transform: scale(1.15);
+
+  box-shadow:
+    0 0 16px #00ffe5,
+    0 0 30px rgba(0,255,229,0.8),
+    inset 0 0 14px rgba(0,255,229,0.6);
+}
+
+  </style>
+
+</head>
+<body>
+  <canvas id="diamondCanvas"></canvas>
+  <div id="diamondContainer"></div>
+
+
+  <div class="card">
+    <h1>Tính Kim Cương cần cho huy hiệu💎</h1>
+
+   <label>Giá gốc mỗi huy hiệu (KC):</label>
+   <input type="number" id="basePrice" value="10" />
+   
+
+    <label>Số huy hiệu cần:</label>
+    <input type="number" id="badges" value="210" />
+    
+
+    <label>Số huy hiệu có thể mua tối đa trong mỗi sự kiện giảm giá:</label>
+    <input type="number" id="perMonth" value="30" />
+    <p id="errorMsg" style="color:red; font-weight:600;"></p>
+
+ 
+
+    <button onclick="generateEvents()">Tính số sự kiện giảm giá cần tham gia</button>
+
+    <div class="event-count">
+      <span>Tổng sự kiện giảm giá cần tham gia:</span>
+      <b id="eventNumber">0</b>
+    </div>
+
+    <h2 class="subheading">Chọn % được giảm giá trong mỗi sự kiện</h2>
+
+    <div class="months" id="months"></div>
+
+    <button onclick="randomize()">Tự động random % giảm</button>
+    <button onclick="calculate()">Tính số KC cần có</button>
+
+    <div class="result">
+      Tổng KC cần: <span id="totalKC">0</span>
+
+<canvas id="kcChart" height="200"></canvas>
+
+      <div class="bar">
+        <div class="bar-fill" id="barFill"></div>
+        <div class="diamond">💎</div>
+      </div>
+
+
+      <div class="minmax">
+        <span id="minKC">Min: 0</span>
+        <span id="maxKC">Max: 0</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    
+const chartCanvas = document.getElementById("kcChart");
+const ctx = chartCanvas.getContext("2d");
+
+function createGradient() {
+  const gradient = ctx.createLinearGradient(0, 0, 0, chartCanvas.height);
+
+  gradient.addColorStop(0, "rgba(0,255,229,0.35)");
+  gradient.addColorStop(0.5, "rgba(0,191,255,0.15)");
+  gradient.addColorStop(1, "rgba(0,0,0,0)");
+  return gradient;
+}
+function createFillGradient() {
+  const g = ctx.createLinearGradient(0, 0, 0, chartCanvas.height);
+
+  g.addColorStop(0, "rgba(0,255,229,0.25)");
+  g.addColorStop(0.6, "rgba(0,191,255,0.10)");
+  g.addColorStop(1, "rgba(0,0,0,0)");
+
+  return g;
+}
+
+let kcChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [{
+      data: [],
+      
+
+      // 🔥 LINE NEON
+      borderColor: createGradient(),
+      borderWidth: 3,
+      tension: 0.4,
+
+      // 🌈 PHỦ GRADIENT DƯỚI LINE
+      fill: true,
+      backgroundColor: createFillGradient(),
+
+      // ✨ CHẤM SÁNG
+      pointRadius: 5,
+      pointHoverRadius: 9,
+      pointBackgroundColor: "#00ffe5",
+      pointBorderColor: "#ffffff",
+      pointBorderWidth: 2,
+
+      // ✨ GLOW TỪNG ĐOẠN
+      segment: {
+        borderColor: () => "#00ffe5"
+      }
+    }]
+  },
+  options: {
+    responsive: true,
+    interaction: {
+      mode: "nearest",
+      intersect: false
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "rgba(0,0,0,0.85)",
+        borderColor: "#00ffe5",
+        borderWidth: 1,
+        titleColor: "#00ffe5",
+        bodyColor: "#ffffff",
+        padding: 10,
+        displayColors: false,
+        animation: false,
+        delay: 0,
+        callbacks: {
+  title: ctx => "Sự kiện " + (ctx[0].dataIndex + 1),
+
+  label: function(ctx) {
+    const kc = ctx.raw;
+
+    // lấy % giảm giá từ danh sách select trong HTML
+    const selects = document.querySelectorAll('#months select');
+    const discount = Math.round(Number(selects[ctx.dataIndex].value) * 100);
+
+    return [
+      "KC bỏ ra: " + kc,
+      "Giảm giá: " + discount + "%"
+   ];
+          }
+        }
+      }
+    }
+  }
+});
+
+Chart.defaults.elements.line.borderJoinStyle = "round";
+
+const originalDraw = Chart.controllers.line.prototype.draw;
+Chart.controllers.line.prototype.draw = function () {
+  const ctx = this.chart.ctx;
+  ctx.save();
+  ctx.shadowColor = "#00ffe5";
+  ctx.shadowBlur = 12;   // độ phát sáng
+  originalDraw.apply(this, arguments);
+  ctx.restore();
+};
+
+
+    
+    let daTinhSuKien = false;
+
+    function createDiamonds() {
+  const container = document.getElementById("diamondContainer");
+
+  for (let i = 0; i < 25; i++) {
+    const d = document.createElement("div");
+    d.className = "diamond";
+
+    // vị trí ngang random
+    d.style.left = Math.random() * 100 + "vw";
+
+    // thời gian rơi khác nhau cho tự nhiên
+    d.style.animationDuration = 1 + Math.random() * 1 + "s";
+
+    container.appendChild(d);
+
+    // xoá sau khi rơi xong
+    setTimeout(() => d.remove(), 2000);
+  }
+}
+  function resetSuKien() {
+  daTinhSuKien = false;
+
+  // xoá số sự kiện hiển thị
+  document.getElementById('eventNumber').innerText = "";
+
+  // xoá danh sách select %
+  document.getElementById('months').innerHTML = "";
+}
+    function isPositiveNumber(value) {
+    return Number(value) > 0;
+  }
+
+    function validateInputs() {
+
+
+  const basePriceInput = document.getElementById('basePrice');
+  const badgesInput = document.getElementById('badges');
+  const perMonthInput = document.getElementById('perMonth');
+  const errorMsg = document.getElementById('errorMsg');
+
+  let basePrice = Number(basePriceInput.value);
+  let badges = Number(badgesInput.value);
+  let perMonth = Number(perMonthInput.value);
+
+  errorMsg.innerText = ""; // reset lỗi
+  
+  // ❌ Không được ≤ 0
+  if (!isPositiveNumber(basePrice) || !isPositiveNumber(badges) || !isPositiveNumber(perMonth)) {
+    errorMsg.innerText = "Giá trị phải lớn hơn 0.";
+    return false;
+  }
+
+  // 🔒 Tự sửa về max hợp lệ
+  if (basePrice > 999) {
+    basePrice = 999;
+    basePriceInput.value = 999;
+  }
+
+  if (badges > 9999) {
+    badges = 9999;
+    badgesInput.value = 9999;
+  }
+
+  if (perMonth > 9999) {
+    perMonth = 9999;
+    perMonthInput.value = 9999;
+  }
+
+  // ❗ Kiểm tra logic
+  if (perMonth > badges) {
+    errorMsg.innerText =
+      "Số huy hiệu có thể mua tối đa mỗi sự kiện phải ≤ số huy hiệu cần.";
+    return false;
+  }
+
+  return true;
+}
+
+
+    function generateEvents() {
+      if (!validateInputs()) return;
+      const badges = Number(document.getElementById('badges').value);
+      const perMonth = Number(document.getElementById('perMonth').value);
+      const events = Math.ceil(badges / perMonth);
+
+      document.getElementById('eventNumber').innerText = events;
+
+      const container = document.getElementById('months');
+      container.innerHTML = '';
+
+      for (let i = 0; i < events; i++) {
+        const select = document.createElement('select');
+        select.innerHTML = `
+          <option value="0.55">${i+1}. 55%</option>
+          <option value="0.6">${i+1}. 60%</option>
+          <option value="0.7">${i+1}. 70%</option>
+          <option value="0.8">${i+1}. 80%</option>
+          <option value="0.85">${i+1}. 85%</option>
+        `;
+        container.appendChild(select);
+      }
+
+      daTinhSuKien = true;   // ⭐ QUAN TRỌNG
+      updateMinMax();
+    }
+
+    function randomize() {
+      const selects = document.querySelectorAll('#months select');
+      const options = [0.55, 0.6, 0.7, 0.8, 0.85];
+
+      selects.forEach(s => {
+        const r = options[Math.floor(Math.random() * options.length)];
+        s.value = r;
+      });
+
+      highlightBest();
+      calculate();
+    }
+
+    function highlightBest() {
+      const selects = document.querySelectorAll('#months select');
+      selects.forEach(s => s.classList.remove('best'));
+
+      selects.forEach(s => {
+        if (Number(s.value) === 0.85) s.classList.add('best');
+      });
+    }
+
+    function updateMinMax() {
+      const perMonth = Number(document.getElementById('perMonth').value);
+      const basePrice = Number(document.getElementById('basePrice').value);
+      const events = Number(document.getElementById('eventNumber').innerText);
+
+      const min = events * perMonth * basePrice * 0.15; // all 85%
+      const max = events * perMonth * basePrice * 0.45; // all 55%
+
+      document.getElementById('minKC').innerText = 'Min: ' + Math.round(min);
+      document.getElementById('maxKC').innerText = 'Max: ' + Math.round(max);
+    }
+
+    function calculate() {
+  if (!daTinhSuKien) {
+    alert("Bạn phải bấm 'Tính số sự kiện cần tham gia' trước!");
+    return;
+  }
+  if (!validateInputs()) return;
+
+  const perMonth = Number(document.getElementById('perMonth').value);
+  const basePrice = Number(document.getElementById('basePrice').value);
+  const selects = document.querySelectorAll('#months select');
+
+  let total = 0;
+  const labels = [];
+  const data = [];
+
+  selects.forEach((s, i) => {
+    const discount = Number(s.value);
+    const kc = basePrice * (1 - discount) * perMonth;
+
+    total += kc;
+    labels.push("Sự kiện " + (i + 1));
+    data.push(Math.round(kc));
+  });
+
+  // cập nhật chart
+  kcChart.data.labels = labels;
+  kcChart.data.datasets[0].data = data;
+  kcChart.update();
+
+  // tổng KC
+  document.getElementById('totalKC').innerText = Math.round(total);
+
+  const max = selects.length * perMonth * basePrice * 0.45;
+  const percent = Math.min(100, (total / max) * 100);
+  document.getElementById('barFill').style.width = percent + '%';
+
+  highlightBest();
+  updateMinMax();
+  createDiamonds();
+}
+    
+    ['basePrice', 'badges', 'perMonth'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    daTinhSuKien = false;
+
+    // xoá hiển thị cũ
+    document.getElementById('eventNumber').innerText = "";
+    document.getElementById('months').innerHTML = "";
+  });
+});
+  
+const canvas = document.getElementById("diamondCanvas");
+const ctx2 = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const diamonds = [];
+
+for (let i = 0; i < 40; i++) {
+  diamonds.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 4 + 2,
+    speed: Math.random() * 0.5 + 0.2,
+    alpha: Math.random()
+  });
+}
+
+function drawDiamond(d) {
+  ctx2.save();
+  ctx2.globalAlpha = d.alpha;
+  ctx2.translate(d.x, d.y);
+
+  ctx2.beginPath();
+  ctx2.moveTo(0, -d.size);
+  ctx2.lineTo(d.size, 0);
+  ctx2.lineTo(0, d.size);
+  ctx2.lineTo(-d.size, 0);
+  ctx2.closePath();
+
+  ctx2.fillStyle = "#00ffe5";
+  ctx2.shadowColor = "#00ffe5";
+  ctx2.shadowBlur = 10;
+  ctx2.fill();
+
+  ctx2.restore();
+}
+
+function animateDiamonds() {
+  ctx2.clearRect(0, 0, canvas.width, canvas.height);
+
+  diamonds.forEach(d => {
+    d.y -= d.speed;
+    d.alpha += (Math.random() - 0.5) * 0.02;
+
+    if (d.y < -10) {
+      d.y = canvas.height + 10;
+      d.x = Math.random() * canvas.width;
+    }
+
+    drawDiamond(d);
+  });
+
+  requestAnimationFrame(animateDiamonds);
+}
+
+animateDiamonds();
+
+function animateGradient() {
+  if (!kcChart) return;
+
+  kcChart.data.datasets[0].borderColor = createGradient();
+  kcChart.update("none");
+
+  requestAnimationFrame(animateGradient);
+}
+
+animateGradient();
+
+  </script>
+<div class="ff-contact-float">
+  <span class="ff-contact-text">Góp ý hoặc báo lỗi</span>
+
+  <a href="mailto:khanhanhff56@gmail.com" class="ff-contact-mail">✉</a>
+</div>
+
+  
+</body>
+</html>
