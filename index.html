@@ -463,7 +463,8 @@
       margin-top: 8px;
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-subtle);
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
       background: rgba(3, 4, 10, 0.9);
       position: relative;
       z-index: 1;
@@ -875,6 +876,13 @@
     @media (max-width: 600px) {
       .converter-grid {
         grid-template-columns: 1fr;
+      }
+      .ff-contact-text {
+        display: none;
+      }
+      .ff-contact-float {
+        padding: 6px;
+        border-radius: 50%;
       }
     }
   </style>
