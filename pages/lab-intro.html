@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gacha KC FF VQTO</title>
+    <link rel="stylesheet" href="../assets/css/lab.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@600&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Nút thoát phòng thí nghiệm -->
+    <a href="../index.html" class="back-to-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Về FF Tools
+    </a>
+    <div class="fantasy-bg">
+        <div class="bg-gradient"></div>
+        <div class="sunburst"></div>
+        <div class="particles" id="particles-container"></div>
+        <div class="haze-overlay"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Mô Phỏng Gacha Vòng Quay Tổ Ong</h1>
+            <div class="studio-brand">By Hoàng God</div>
+        </header>
+
+        <nav class="main-nav">
+            <a href="lab-spin.html" class="nav-tab">Quay thử</a>
+            <a href="index.html" class="nav-tab active">Thống kê</a>
+        </nav>
+
+        <main>
+            <section class="config-panel glass">
+                <h2 class="sub-title">Dự đoán số Kim Cương để đạt đủ huy hiệu</h2>
+
+                <div class="input-group">
+                    <label for="targetBadges">Mục Tiêu Huy Hiệu</label>
+                    <input type="number" id="targetBadges" value="180" min="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="singleSpinThreshold">Chuyển sang quay 1 lượt quay khi còn thiếu (Huy Hiệu)</label>
+                    <input type="number" id="singleSpinThreshold" value="5" min="0">
+                    <p class="input-tip">💡 Ví dụ: Điền 5 nghĩa là khi mục tiêu huy hiệu là 180 mà hiện tại đã có 175
+                        huy hiệu hoặc hơn thì sẽ chuyển sang quay 1 lượt.</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="simCount">Số Lần Chạy Thử (Mẫu)</label>
+                    <input type="number" id="simCount" value="1000" min="1" max="1000000" step="100">
+                    <p class="input-tip">💡 Tip: Nên chạy từ 100 lượt trở lên để kết quả đỡ lệch và sát thực tế hơn.
+                    </p>
+                </div>
+
+                <div class="probabilities-group">
+                    <h3>Tỷ Lệ Phần Trăm (Tổng phải = 100%)</h3>
+                    <div class="prob-inputs">
+                        <div class="prob-item">
+                            <label>1 Huy hiệu</label>
+                            <input type="number" id="prob1" value="70" min="0" max="100" step="1">%
+                        </div>
+                        <div class="prob-item">
+                            <label>2 Huy hiệu</label>
+                            <input type="number" id="prob2" value="15" min="0" max="100" step="1">%
+                        </div>
+                        <div class="prob-item">
+                            <label>3 Huy hiệu</label>
+                            <input type="number" id="prob3" value="10" min="0" max="100" step="1">%
+                        </div>
+                        <div class="prob-item">
+                            <label>5 Huy hiệu</label>
+                            <input type="number" id="prob5" value="4" min="0" max="100" step="1">%
+                        </div>
+                        <div class="prob-item">
+                            <label>10 Huy hiệu</label>
+                            <input type="number" id="prob10" value="1" min="0" max="100" step="1">%
+                        </div>
+                    </div>
+                    <div id="prob-error" class="error-msg"></div>
+                </div>
+
+                <button id="runBtn" class="primary-btn">Chạy Mô Phỏng</button>
+
+                <!-- Simple Progress Bar -->
+                <div id="simpleProgressContainer" class="hidden">
+                    <div class="progress-header">
+                        <span id="simpleProgressStatus">Đang chạy...</span>
+                        <span id="simpleProgressText">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div id="simpleProgressBar"></div>
+                    </div>
+                </div>
+
+
+
+
+            </section>
+
+            <section class="results-panel glass hidden" id="resultsPanel">
+                <h2>Kết Quả Dự Đoán</h2>
+
+                <div class="badges-container">
+                    <!-- Average Badge -->
+                    <div class="badge-item average">
+                        <div class="badge-circle">
+                            <span class="badge-value" id="meanCost">---</span>
+                            <span class="badge-unit">💎</span>
+                        </div>
+                        <span class="badge-label">Trung Bình</span>
+                    </div>
+
+                    <!-- Lucky Badge -->
+                    <div class="badge-item lucky">
+                        <div class="badge-circle">
+                            <span class="badge-value" id="minCost">---</span>
+                            <span class="badge-unit">💎</span>
+                        </div>
+                        <span class="badge-label">May Mắn Nhất</span>
+                    </div>
+
+                    <!-- Unlucky Badge -->
+                    <div class="badge-item unlucky">
+                        <div class="badge-circle">
+                            <span class="badge-value" id="maxCost">---</span>
+                            <span class="badge-unit">💎</span>
+                        </div>
+                        <span class="badge-label">Xui Xẻo Nhất</span>
+                    </div>
+                </div>
+
+                <!-- Safe Cost Highlight (Keep as card or change to banner) -->
+                <div class="safe-cost-banner highlight">
+                    <span class="label">An Toàn (99% tỉ lệ trúng)</span>
+                    <div class="value-group">
+                        <span class="value" id="p99Cost">---</span>
+                        <span class="unit">💎</span>
+                    </div>
+                </div>
+
+                <div class="details">
+                    <h3>Chi tiết phân phối</h3>
+                    <p id="insight-message" style="margin-bottom: 15px; font-style: italic; color: #ffd700;"></p>
+                    <ul id="percentilesList">
+                        <!-- Percentiles will be injected here -->
+                    </ul>
+                </div>
+            </section>
+
+            <section class="history-panel glass hidden" id="historyPanel">
+                <div class="history-header">
+                    <h2>Lịch Sử Dữ Liệu</h2>
+                    <button id="clearHistoryBtn" class="secondary-btn">🗑️ Xóa Lịch Sử</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- History items will be injected here -->
+                    <div class="empty-history">Chưa có dữ liệu lịch sử.</div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                Công cụ Gacha này được xây dựng cho mục đích mô phỏng và tham khảo.
+                Các kết quả, xác suất và chi phí hiển thị không phản ánh dữ liệu chính thức từ nhà phát hành game.
+            </div>
+        </footer>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmationModal" class="modal hidden">
+            <div class="modal-content glass">
+                <h3>Xác nhận xoá</h3>
+                <p>Bạn có chắc chắn muốn xóa toàn bộ lịch sử mô phỏng không? Hành động này không thể hoàn tác.</p>
+                <div class="modal-actions">
+                    <button id="cancelDeleteBtn" class="secondary-btn">Hủy bỏ</button>
+                    <button id="confirmDeleteBtn" class="danger-btn">Xóa ngay</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Feedback Button -->
+        <a href="mailto:khanhanhff56@gmail.com" class="floating-feedback">
+            <span class="icon-circle">
+                <svg class="email-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </span>
+            <span class="text">Góp ý / Báo lỗi</span>
+        </a>
+
+    </div>
+    <script src="../assets/js/lab.js"></script>
+</body>
+
+</html>

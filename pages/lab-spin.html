@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gacha KC FF VQTO - Quay Thử</title>
+    <link rel="stylesheet" href="../assets/css/lab.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Nút thoát phòng thí nghiệm -->
+    <a href="../index.html" class="back-to-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Về FF Tools
+    </a>
+    <!-- Rotate Screen Overlay (Portrait Mobile) -->
+    <div class="rotate-overlay">
+        <div class="rotate-icon">📱</div>
+        <div class="rotate-title">Xoay ngang màn hình</div>
+        <div class="rotate-desc">Vui lòng xoay điện thoại sang chế độ ngang để có trải nghiệm tốt nhất.</div>
+    </div>
+    <div class="fantasy-bg">
+        <div class="bg-gradient"></div>
+        <div class="sunburst"></div>
+        <div class="particles" id="particles-container"></div>
+        <div class="haze-overlay"></div>
+    </div>
+
+    <div id="sidebarOverlay" class="sidebar-overlay hidden" onclick="game.toggleSidebar()"></div>
+    <!-- Probability Config Sidebar -->
+    <aside id="configSidebar" class="config-sidebar collapsed">
+
+        <div class="sidebar-content">
+            <div class="sidebar-header-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <h3 class="sidebar-title" style="margin: 0;">Tùy chỉnh Tỷ lệ</h3>
+                    <button class="close-sidebar-btn" onclick="game.toggleSidebar()"
+                        style="background:none; border:none; color: #aaa; font-size: 1.5rem; cursor: pointer;">✕</button>
+                </div>
+                <small class="highlight-text-sub">
+                    Nhập tỷ lệ mong muốn cho từng huy hiệu.
+                    <span class="reset-prob-link" onclick="game.resetProbs()">Đặt lại</span>
+                </small>
+            </div>
+
+            <!-- Moved Lock Section to Bottom -->
+
+            <div class="prob-list">
+                <div class="prob-item-row">
+                    <span class="badge-label">1 Huy hiệu</span>
+                    <div class="prob-control-group">
+                        <button class="prob-btn minus" onclick="game.changeProb('prob1', -1)">-</button>
+                        <input type="number" id="prob1" value="65"
+                            oninput="game.validateProbInput(this); game.updateProb()" onchange="game.updateProb()">
+                        <button class="prob-btn plus" onclick="game.changeProb('prob1', 1)">+</button>
+                    </div>
+                    <span class="unit">%</span>
+                </div>
+                <div class="prob-item-row">
+                    <span class="badge-label">2 Huy hiệu</span>
+                    <div class="prob-control-group">
+                        <button class="prob-btn minus" onclick="game.changeProb('prob2', -1)">-</button>
+                        <input type="number" id="prob2" value="15"
+                            oninput="game.validateProbInput(this); game.updateProb()" onchange="game.updateProb()">
+                        <button class="prob-btn plus" onclick="game.changeProb('prob2', 1)">+</button>
+                    </div>
+                    <span class="unit">%</span>
+                </div>
+                <div class="prob-item-row">
+                    <span class="badge-label">3 Huy hiệu</span>
+                    <div class="prob-control-group">
+                        <button class="prob-btn minus" onclick="game.changeProb('prob3', -1)">-</button>
+                        <input type="number" id="prob3" value="12"
+                            oninput="game.validateProbInput(this); game.updateProb()" onchange="game.updateProb()">
+                        <button class="prob-btn plus" onclick="game.changeProb('prob3', 1)">+</button>
+                    </div>
+                    <span class="unit">%</span>
+                </div>
+                <div class="prob-item-row">
+                    <span class="badge-label">5 Huy hiệu</span>
+                    <div class="prob-control-group">
+                        <button class="prob-btn minus" onclick="game.changeProb('prob5', -1)">-</button>
+                        <input type="number" id="prob5" value="5"
+                            oninput="game.validateProbInput(this); game.updateProb()" onchange="game.updateProb()">
+                        <button class="prob-btn plus" onclick="game.changeProb('prob5', 1)">+</button>
+                    </div>
+                    <span class="unit">%</span>
+                </div>
+                <div class="prob-item-row">
+                    <span class="badge-label">10 Huy hiệu</span>
+                    <div class="prob-control-group">
+                        <button class="prob-btn minus" onclick="game.changeProb('prob10', -1)">-</button>
+                        <input type="number" id="prob10" value="3"
+                            oninput="game.validateProbInput(this); game.updateProb()" onchange="game.updateProb()">
+                        <button class="prob-btn plus" onclick="game.changeProb('prob10', 1)">+</button>
+                    </div>
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="lock-section-gaming">
+                    <div class="lock-header">
+                        <span class="lock-label">TRẠNG THÁI KHÓA</span>
+                        <div class="lock-status-indicator" id="lockStatusInd"></div>
+                    </div>
+                    <button id="lockProbBtn" class="gaming-lock-btn" onclick="game.lockProb()">
+                        <span class="btn-text">XÁC NHẬN KHÓA</span>
+                        <span class="btn-icon">🔓</span>
+                    </button>
+                    <div id="probWarning" class="sidebar-warning hidden">⚠️ TỔNG PHẢI = 100%</div>
+                    <button id="unlockProbBtn" class="small-unlock-btn hidden" onclick="game.unlockProb()">
+                        🔓 Mở khóa chỉnh lại
+                    </button>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="container">
+        <header>
+            <h1>Mô Phỏng Gacha Vòng Quay Tổ Ong</h1>
+            <div class="studio-brand">By Hoàng God</div>
+        </header>
+
+        <nav class="main-nav">
+            <a href="spin.html" class="nav-tab active">Quay thử</a>
+            <a href="lab-intro.html" class="nav-tab">Thống kê</a>
+        </nav>
+
+        <main class="wide-container">
+            <div class="gacha-main-grid">
+                <!-- LEFT COLUMN (20%) -->
+                <aside class="col-panel left-panel">
+                    <!-- Settings Button -->
+                    <div class="panel-section">
+                        <button id="sidebarToggle" class="icon-btn-glass full-width" onclick="game.toggleSidebar()"
+                            title="Cấu hình Tỷ lệ">
+                            ⚙️ <span class="btn-label">Tùy chỉnh</span>
+                        </button>
+                    </div>
+
+                    <!-- Inventory -->
+                    <div class="panel-section inventory-section">
+                        <h3 class="panel-title">KHO ĐỒ</h3>
+                        <div class="inventory-list" id="inventoryList">
+                            <!-- Items will be populated by JS -->
+                            <div class="inv-item"><span class="inv-badge gold">🏅</span> <span
+                                    class="inv-count">x0</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder for vertical list or other left-side content -->
+                    <div class="panel-section extra-info">
+                        <!-- Potential list content -->
+                    </div>
+                </aside>
+
+                <!-- CENTER COLUMN (60%) -->
+                <section class="col-panel center-panel">
+                    <h1 class="game-title-neon small">QUAY THỬ GACHA</h1>
+
+                    <div class="game-stage">
+                        <!-- Honeycomb Grid -->
+                        <div class="honeycomb-diamond">
+                            <!-- Row 1 -->
+                            <div class="hex-cell normal" data-val="1" data-pos="r1-1">
+                                <div class="hex-content">x1</div>
+                            </div>
+                            <div class="hex-cell normal" data-val="10" data-pos="r1-2">
+                                <div class="hex-content">x10</div>
+                            </div>
+                            <div class="hex-cell normal" data-val="2" data-pos="r1-3">
+                                <div class="hex-content">x2</div>
+                            </div>
+                            <div class="hex-cell normal" data-val="1" data-pos="r1-4">
+                                <div class="hex-content">x1</div>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="hex-cell normal" data-val="3" data-pos="r2-1">
+                                <div class="hex-content">x3</div>
+                            </div>
+                            <div class="hex-cell center-prize" data-pos="center">
+                                <div class="hex-content"><span class="prize-icon">🏆</span></div>
+                            </div>
+                            <div class="hex-cell normal" data-val="3" data-pos="r2-3">
+                                <div class="hex-content">x3</div>
+                            </div>
+
+                            <!-- Row 3 -->
+                            <div class="hex-cell normal" data-val="1" data-pos="r3-1">
+                                <div class="hex-content">x1</div>
+                            </div>
+                            <div class="hex-cell normal" data-val="2" data-pos="r3-2">
+                                <div class="hex-content">x2</div>
+                            </div>
+                            <div class="hex-cell normal" data-val="5" data-pos="r3-3">
+                                <div class="hex-content">x5</div>
+                            </div>
+                            <div class="hex-cell normal" data-val="2" data-pos="r3-4">
+                                <div class="hex-content">x2</div>
+                            </div>
+                        </div>
+
+                        <!-- Spin Buttons -->
+                        <div class="spin-controls-crystal">
+                            <div id="btnGroupOne" class="btn-wrapper first-time">
+                                <button id="spinOneBtn" class="spin-btn blue" onclick="game.spin(1)">
+                                    <div class="content">
+                                        <div class="title">QUAY 1 LẦN</div>
+                                        <div class="price">
+                                            <div>💎</div>
+                                            <span class="price-text">
+                                                <span class="old-price">19</span>
+                                                <span class="new-price">9</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <div id="btnGroupTen" class="btn-wrapper first-time">
+                                <button id="spinTenBtn" class="spin-btn gold" onclick="game.spin(10)">
+                                    <div class="content">
+                                        <div class="title">QUAY 10 LẦN</div>
+                                        <div class="price">
+                                            <div>💎</div>
+                                            <span class="price-text">
+                                                <span class="old-price">179</span>
+                                                <span class="new-price">89</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RIGHT COLUMN (20%) -->
+                <aside class="col-panel right-panel">
+                    <!-- Currency -->
+                    <div class="panel-section">
+                        <div class="currency-badge full-width">
+                            <span class="currency-icon">💎</span>
+                            <span id="totalSpent" class="currency-value">0</span>
+                        </div>
+                        <button class="reset-progress-btn" onclick="game.resetProgress()">🔄 Reset</button>
+                    </div>
+
+                    <!-- Target & Progress -->
+                    <div class="panel-section progress-section">
+                        <!-- Target Input -->
+                        <div class="target-capsule">
+                            <div class="capsule-label-icon">🎯</div>
+                            <div class="capsule-input-wrapper">
+                                <input type="number" id="targetBadgeInput" value="180" min="1" max="999"
+                                    oninput="game.handleInput(this)" onchange="game.updateTarget()">
+                            </div>
+                        </div>
+
+                        <div class="sidebar-divider vertical-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+
+                        <!-- Current / Target Text -->
+                        <div class="status-counters small">
+                            <span class="current-val">0</span>
+                            <span class="separator">/</span>
+                            <span class="target-val">180</span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="progress-track-vertical">
+                            <div id="badgeProgressBar" class="progress-fill-vertical" style="height: 0%"></div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Result Modal -->
+            <div id="resultModal" class="result-modal-overlay hidden">
+                <div class="result-container glass">
+                    <!-- Removed X button -->
+                    <h2 class="result-title"><span class="title-text">CHÚC MỪNG!</span></h2>
+                    <div class="result-grid" id="resultGrid">
+                        <!-- Items injected here -->
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="result-actions">
+                        <div class="action-group">
+                            <button id="modalSpinActionBtn" class="action-btn spin-again-btn"
+                                onclick="game.spinFromModal(10)">QUAY 10 LẦN</button>
+                            <div class="under-btn-price">
+                                <span>💎</span>
+                                <span id="modalSpinPrice">179</span>
+                            </div>
+                        </div>
+                        <div class="action-group">
+                            <button class="action-btn ok-btn" onclick="game.closeResultModal()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Custom Toast Notification -->
+            <div id="customToast" class="custom-toast hidden">
+                <span id="toastMessage">Thông báo</span>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                Công cụ Gacha này được xây dựng cho mục đích mô phỏng và tham khảo.
+                Các kết quả, xác suất và chi phí hiển thị không phản ánh dữ liệu chính thức từ nhà phát hành game.
+            </div>
+        </footer>
+
+        <!-- Floating Feedback Button -->
+        <a href="mailto:contact.antigravity@gmail.com" class="floating-feedback">
+            <span class="icon-circle">
+                <svg class="email-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </span>
+            <span class="text">Góp ý / Báo lỗi</span>
+        </a>
+
+    </div>
+
+    <!-- Unsaved Changes Modal -->
+    <div id="unsavedChangesModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 class="modal-title">Cảnh báo</h3>
+            <p class="modal-desc">Bạn có thay đổi chưa được lưu (chưa khóa tỷ lệ).<br>Bạn có muốn khóa lại trước khi
+                đóng không?</p>
+            <div class="modal-actions">
+                <button id="cancelCloseBtn" class="modal-btn cancel"
+                    onclick="game.hideUnsavedChangesModal()">Hủy</button>
+                <button id="confirmLockCloseBtn" class="modal-btn confirm" onclick="game.confirmLockAndClose()">Khóa &
+                    Đóng</button>
+            </div>
+        </div>
+    </div>
+    <!-- Badge Notification Bar (Bottom Right) - Moved to Body Root -->
+    <div id="badgeNotification" class="badge-notification hidden">
+        <div class="notification-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+                    stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7" stroke="#ffd700" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round"></line>
+            </svg>
+        </div>
+        <div class="notification-content">
+            <div class="notification-values">
+                <span id="notifTotal" class="notif-total">0</span>
+                <span id="notifAdded" class="notif-added">(+0)</span>
+            </div>
+            <div class="notification-label">ĐÃ NHẬN HUY HIỆU</div>
+        </div>
+    </div>
+    <script src="../assets/js/lab.js"></script>
+</body>
+
+</html>
