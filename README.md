@@ -51,13 +51,19 @@ Bởi vì đây là một dự án **Single Page Application (SPA)** hoàn toàn
 
 ## 💡 Cấu Trúc File
 ```text
-📦 AI work
- ┣ 📂 vong_quay      # Thư mục mã nguồn riêng của Phòng Thí Nghiệm (Vòng Quay Tổ Ong)
- ┃ ┣ 📜 index.html   # Giao diện chính của Vòng Quay
- ┃ ┣ 📜 spin.html    # Trang quay vòng Gacha
- ┃ ┗ 📜 style.css    # File style khổng lồ với nhiều hiệu ứng bắt mắt
- ┣ 📜 index.html     # Toàn bộ linh hồn của dự án FF Tools (Tính KC & So Sánh)
- ┗ 📜 README.md      # File hướng dẫn này
+📦 FF tools
+ ┣ 📂 assets
+ ┃ ┣ 📂 css
+ ┃ ┃ ┣ 📜 main.css          # Style chính cho dự án
+ ┃ ┃ ┗ 📜 lab.css           # Style cho Phòng Thí Nghiệm
+ ┃ ┗ 📂 js
+ ┃   ┣ 📜 main.js           # Logic xử lý tính toán
+ ┃   ┗ 📜 lab.js            # Logic của Vòng Quay
+ ┣ 📂 pages
+ ┃ ┣ 📜 lab-intro.html      # Giao diện chính của Phòng Thí Nghiệm
+ ┃ ┗ 📜 lab-spin.html       # Trang quay vòng Gacha
+ ┣ 📜 index.html            # File khởi chạy chính
+ ┗ 📜 README.md             # File hướng dẫn này
 ```
 
 ---
