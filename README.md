@@ -15,10 +15,17 @@ Một trang web siêu xịn xò dành cho các game thủ Free Fire (Lửa Chùa
 - Cung cấp tỷ lệ sinh lời (%) và số KC thực nhận để tìm ra "Best Deal".
 - Đề xuất gói nạp phù hợp theo từng phong cách chơi (lâu dài vs tức thời).
 
-### 🎨 3. Giao Diện & Trải Nghiệm (UI/UX)
-- Giao diện phong cách **Dark Mode / Cyberpunk** với các dải màu neon xanh dương và xanh lá đậm chất Free Fire.
+### 🎲 3. Phòng Thí Nghiệm (Vòng Quay Tổ Ong)
+- Một không gian "bí mật" với thiết kế tone màu Tím/Vàng Gold tách biệt hoàn toàn.
+- Mô phỏng vòng quay sự kiện chân thực với các nút điều khiển, hoạt ảnh mượt mà và logic tính toán xác suất.
+- Bố trí nút "Về FF Tools" tối giản giúp dễ dàng thoát khỏi không gian thử nghiệm.
+
+### 🎨 4. Giao Diện & Trải Nghiệm (UI/UX)
+- Giao diện phong cách **Dark Mode / Cyberpunk** với các dải màu neon xanh dương, xanh lá và tím (cho Phòng Thí Nghiệm).
+- **Thanh Điều Hướng (Navigation):** Vuốt ngang mượt mà trên Mobile (Swipeable Tabs) giúp tiết kiệm không gian. Hiệu ứng Gradient Blending (lai màu) cực kỳ bắt mắt.
+- **Custom Alert Popup:** Thay thế hoàn toàn popup mặc định của trình duyệt bằng bảng thông báo kính mờ (Glassmorphism) chuyên nghiệp.
 - Hiệu ứng kim cương rơi siêu ảo diệu (Canvas Animation).
-- **Responsive 100%**: Trải nghiệm mượt mà trên cả PC lẫn điện thoại.
+- **Responsive 100%**: Trải nghiệm mượt mà và được tinh chỉnh tối đa trên cả PC lẫn điện thoại.
 
 ---
 
@@ -45,8 +52,12 @@ Bởi vì đây là một dự án **Single Page Application (SPA)** hoàn toàn
 ## 💡 Cấu Trúc File
 ```text
 📦 AI work
- ┣ 📜 index.html  # Toàn bộ linh hồn của dự án: Chứa HTML (giao diện), CSS (Styling) và JS (Logic/Thuật toán)
- ┗ 📜 README.md   # File hướng dẫn này
+ ┣ 📂 vong_quay      # Thư mục mã nguồn riêng của Phòng Thí Nghiệm (Vòng Quay Tổ Ong)
+ ┃ ┣ 📜 index.html   # Giao diện chính của Vòng Quay
+ ┃ ┣ 📜 spin.html    # Trang quay vòng Gacha
+ ┃ ┗ 📜 style.css    # File style khổng lồ với nhiều hiệu ứng bắt mắt
+ ┣ 📜 index.html     # Toàn bộ linh hồn của dự án FF Tools (Tính KC & So Sánh)
+ ┗ 📜 README.md      # File hướng dẫn này
 ```
 
 ---

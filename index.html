@@ -8,6 +8,33 @@
   
   <style>
     /* ========================================= */
+    /* PHÒNG THÍ NGHIỆM (LAB LINK)               */
+    /* ========================================= */
+    .nav-tab.lab-link {
+      text-decoration: none;
+      background: linear-gradient(90deg, rgba(0, 255, 229, 0.15), rgba(192, 132, 252, 0.25), rgba(255, 215, 0, 0.15));
+      border: 1px solid rgba(192, 132, 252, 0.6);
+      color: #e8d0ff;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: "Poppins", Arial, sans-serif;
+      box-shadow: 0 0 10px rgba(192, 132, 252, 0.2);
+    }
+    
+    .nav-tab.lab-link:hover {
+      background: linear-gradient(90deg, rgba(0, 255, 229, 0.3), rgba(192, 132, 252, 0.4), rgba(255, 215, 0, 0.3));
+      border-color: #ffd700;
+      color: #ffd700;
+      box-shadow: 0 0 20px rgba(192, 132, 252, 0.5), inset 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+
+    /* ========================================= */
     /* CHUNG CHUNG VÀ TABS NAVBAR                */
     /* ========================================= */
     * {
@@ -16,6 +43,7 @@
 
     body {
       margin: 0;
+      padding: 0;
       min-height: 100vh;
       background: radial-gradient(circle at top, #1e293b 0%, #05060a 45%, #020308 100%);
       font-family: "Poppins", Arial, sans-serif;
@@ -59,7 +87,7 @@
 
     .nav-tab {
       background: transparent;
-      border: 1px solid transparent;
+      border: 1px solid rgba(0, 255, 229, 0.3);
       color: #a5a7b8;
       font-size: 14px;
       font-weight: 500;
@@ -874,6 +902,31 @@
     .conv-row.highlight-best strong { color: #22c55e; }
 
     @media (max-width: 600px) {
+      .top-nav {
+        padding: 8px 12px;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-brand {
+        font-size: 18px;
+      }
+      .nav-tabs {
+        width: 100%;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 4px;
+      }
+      /* Ẩn thanh cuộn trên mobile nhưng vẫn vuốt được */
+      .nav-tabs::-webkit-scrollbar {
+        height: 0px;
+        background: transparent;
+      }
+      .nav-tab, .nav-tab.lab-link {
+        font-size: 12px;
+        padding: 6px 12px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
       .converter-grid {
         grid-template-columns: 1fr;
       }
@@ -895,9 +948,89 @@
         backdrop-filter: blur(6px);
       }
     }
+
+    /* CUSTOM ALERT POPUP */
+    .custom-alert-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 99999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .custom-alert-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .custom-alert-box {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(0, 255, 229, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 255, 229, 0.1);
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .custom-alert-overlay.show .custom-alert-box {
+      transform: translateY(0) scale(1);
+    }
+    .custom-alert-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+    .custom-alert-title {
+      color: #00ffe5;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .custom-alert-msg {
+      color: #e2e8f0;
+      font-size: 14px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .custom-alert-btn {
+      background: linear-gradient(135deg, rgba(0, 255, 229, 0.2), rgba(0, 163, 255, 0.2));
+      border: 1px solid #00ffe5;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      font-family: "Poppins", sans-serif;
+    }
+    .custom-alert-btn:hover {
+      background: linear-gradient(135deg, rgba(0, 255, 229, 0.4), rgba(0, 163, 255, 0.4));
+      box-shadow: 0 0 15px rgba(0, 255, 229, 0.3);
+    }
   </style>
 </head>
 <body>
+  <!-- Custom Popup Overlay -->
+  <div class="custom-alert-overlay" id="customAlertOverlay">
+    <div class="custom-alert-box">
+      <div class="custom-alert-icon">⚠️</div>
+      <div class="custom-alert-title">Thông báo</div>
+      <div class="custom-alert-msg" id="customAlertMsg">Bạn phải bấm Tính trước!</div>
+      <button class="custom-alert-btn" onclick="closeCustomAlert()">Đã hiểu</button>
+    </div>
+  </div>
+
+  <!-- Global Navigation Menu (Removed) -->
+
   <!-- Fixed Background Canvases -->
   <canvas id="diamondCanvas"></canvas>
   <div id="diamondContainer"></div>
@@ -914,6 +1047,7 @@
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="openTab('tab-calc', this)">🎯 Tính KC Sự Kiện</button>
       <button class="nav-tab" onclick="openTab('tab-premium', this)">💎 So Sánh Nạp</button>
+      <a href="vong_quay/spin.html" class="nav-tab lab-link">🧪 Phòng Thí Nghiệm</a>
     </div>
   </nav>
 
@@ -1167,6 +1301,15 @@
       btn.classList.add('active');
     }
 
+    // Custom Alert Logic
+    function showCustomAlert(msg) {
+      document.getElementById('customAlertMsg').innerText = msg;
+      document.getElementById('customAlertOverlay').classList.add('show');
+    }
+    function closeCustomAlert() {
+      document.getElementById('customAlertOverlay').classList.remove('show');
+    }
+
     // TAB 1 (CALC) LOGIC
     const chartCanvas = document.getElementById("kcChart");
     const ctx = chartCanvas.getContext("2d");
@@ -1351,7 +1494,7 @@
     }
 
     function calculate() {
-      if (!daTinhSuKien) { alert("Bạn phải bấm 'Tính số sự kiện cần tham gia' trước!"); return; }
+      if (!daTinhSuKien) { showCustomAlert("Bạn phải bấm 'Tính số sự kiện cần tham gia' trước!"); return; }
       if (!validateInputs()) return;
       const perMonth = Number(document.getElementById('perMonth').value);
       const basePrice = Number(document.getElementById('basePrice').value);
