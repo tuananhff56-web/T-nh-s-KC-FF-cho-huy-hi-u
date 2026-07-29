@@ -71,5 +71,5 @@ Bởi vì đây là một dự án **Single Page Application (SPA)** hoàn toàn
 ## 📬 Góp Ý & Hỗ Trợ
 Nếu bạn có ý tưởng tính năng mới hay phát hiện lỗi trong quá trình sử dụng, bạn có thể click trực tiếp vào nút **"Góp ý hoặc báo lỗi"** (biểu tượng phong thư ✉) ở góc phải bên dưới màn hình để gửi Email thẳng cho Tác Giả.
 
-**Tác giả:** [khanhanhff56@gmail.com]
+**Tác giả:** [tuananh56@gmail.com]
 **Happy Gaming! Lên Booyah thả ga không lo cạn máu! 🎮🔥**
