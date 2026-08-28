@@ -449,6 +449,15 @@
       const selectionText = document.getElementById("selection-text");
       const selectionTip = document.getElementById("selection-tip");
 
+      rows.forEach(row => {
+        const kc = parseInt(row.dataset.kc, 10);
+        const regularKc = parseInt(row.dataset.regularKc, 10);
+        const valuePercent = ((kc / regularKc) * 100).toFixed(1) + '%';
+        const valueBadge = row.querySelector('.badge-star');
+
+        if (valueBadge) valueBadge.innerHTML = `<span class="icon">⭐</span>${valuePercent}`;
+      });
+
       function formatVND(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
       }
@@ -459,14 +468,15 @@
 
         const name = row.dataset.name;
         const price = parseInt(row.dataset.price, 10);
-        const kc = row.dataset.kc;
-        const profit = row.dataset.profit;
+        const kc = parseInt(row.dataset.kc, 10);
+        const regularKc = parseInt(row.dataset.regularKc, 10);
+        const valuePercent = ((kc / regularKc) * 100).toFixed(1) + '%';
         const profitKc = row.dataset.profitkc;
         const note = row.dataset.note || "";
 
         selectionText.innerHTML =
           `Bạn chọn <strong>${name}</strong> — nạp <strong>${formatVND(price)}</strong> ` +
-          `nhận <strong>${kc} KC</strong>, lời <strong>+${profitKc} KC</strong> (${profit}) so với nạp thường.`;
+          `nhận <strong>${kc} KC</strong>, lời <strong>+${profitKc} KC</strong> — giá trị <strong>${valuePercent}</strong> so với nạp thường.`;
         selectionTip.textContent = note;
       }
 
