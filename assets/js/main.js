@@ -446,8 +446,53 @@
     // TAB 2 (PREMIUM) LOGIC
     document.addEventListener("DOMContentLoaded", function () {
       const rows = Array.from(document.querySelectorAll(".prem-card tbody tr"));
+      const tableBody = document.querySelector(".prem-card tbody");
       const selectionText = document.getElementById("selection-text");
       const selectionTip = document.getElementById("selection-tip");
+      const customBonusInput = document.getElementById("customBonusKc");
+      const customBonusHint = document.getElementById("customBonusHint");
+      const customPackageRow = document.querySelector(".custom-package");
+      const customPackageControl = document.querySelector(".custom-package-control");
+      const customPackageToggle = document.getElementById("customPackageToggle");
+
+      function getValuePercent(row) {
+        return (parseInt(row.dataset.kc, 10) / parseInt(row.dataset.regularKc, 10)) * 100;
+      }
+
+      function updateBestDealAndOrder() {
+        rows.sort((a, b) => getValuePercent(b) - getValuePercent(a));
+        rows.forEach(row => {
+          row.classList.remove("best");
+          const tag = row.querySelector(".tag-best");
+          if (tag) tag.remove();
+          tableBody.appendChild(row);
+        });
+
+        const bestRow = rows[0];
+        bestRow.classList.add("best");
+        bestRow.querySelector(".cell-plan").insertAdjacentHTML("afterbegin", '<span class="tag-best">BEST DEAL</span>');
+      }
+
+      function updateCustomPackage() {
+        const parsedBonusKc = parseInt(customBonusInput.value, 10);
+        const bonusKc = Number.isFinite(parsedBonusKc) ? Math.max(0, parsedBonusKc) : 0;
+        const receivedKc = 100 + bonusKc;
+        const regularKc = parseInt(customPackageRow.dataset.regularKc, 10);
+        const profitKc = receivedKc - regularKc;
+        const profitLabel = `${profitKc >= 0 ? '+' : ''}${profitKc}`;
+        const valuePercent = ((receivedKc / regularKc) * 100).toFixed(1) + '%';
+
+        customBonusHint.textContent = `Nhận: ${receivedKc} 💎`;
+        customPackageRow.dataset.name = `Nạp 100 KC (+${bonusKc} KC bonus)`;
+        customPackageRow.dataset.kc = receivedKc;
+        customPackageRow.dataset.profitkc = profitKc;
+        customPackageRow.querySelector(".plan-name").textContent = `Nạp 100 KC (+${bonusKc} KC bonus)`;
+        customPackageRow.querySelector('[data-field="kc"]').textContent = `${receivedKc} 💎`;
+        customPackageRow.querySelector('[data-field="profit-kc"]').innerHTML = '<span style="color: #00ffe5; font-weight: 500;">' + profitLabel + ' 💎</span>';
+        customPackageRow.querySelector('[data-field="value"]').innerHTML = `<span class="icon">⭐</span>${valuePercent}`;
+
+        updateBestDealAndOrder();
+      }
 
       rows.forEach(row => {
         const kc = parseInt(row.dataset.kc, 10);
@@ -457,6 +502,8 @@
 
         if (valueBadge) valueBadge.innerHTML = `<span class="icon">⭐</span>${valuePercent}`;
       });
+
+      updateCustomPackage();
 
       function formatVND(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
@@ -472,16 +519,33 @@
         const regularKc = parseInt(row.dataset.regularKc, 10);
         const valuePercent = ((kc / regularKc) * 100).toFixed(1) + '%';
         const profitKc = row.dataset.profitkc;
+        const profitLabel = `${parseInt(profitKc, 10) >= 0 ? '+' : ''}${profitKc}`;
         const note = row.dataset.note || "";
 
         selectionText.innerHTML =
           `Bạn chọn <strong>${name}</strong> — nạp <strong>${formatVND(price)}</strong> ` +
-          `nhận <strong>${kc} KC</strong>, lời <strong>+${profitKc} KC</strong> — giá trị <strong>${valuePercent}</strong> so với nạp thường.`;
+          `nhận <strong>${kc} KC</strong>, lời <strong>${profitLabel} KC</strong> — giá trị <strong>${valuePercent}</strong> so với nạp thường.`;
         selectionTip.textContent = note;
       }
 
       rows.forEach(row => {
         row.addEventListener("click", () => selectRow(row));
+      });
+
+      customBonusInput.addEventListener("input", () => {
+        updateCustomPackage();
+        if (customPackageRow.classList.contains("selected")) selectRow(customPackageRow);
+      });
+
+      customBonusInput.addEventListener("blur", () => {
+        const parsedBonusKc = parseInt(customBonusInput.value, 10);
+        customBonusInput.value = Number.isFinite(parsedBonusKc) ? Math.max(0, parsedBonusKc) : 0;
+        updateCustomPackage();
+      });
+
+      customPackageToggle.addEventListener("click", () => {
+        const isOpen = customPackageControl.classList.toggle("is-open");
+        customPackageToggle.setAttribute("aria-expanded", String(isOpen));
       });
 
       if (rows[0]) selectRow(rows[0]);

@@ -489,6 +489,109 @@
       z-index: 1;
     }
 
+    .custom-package-control {
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
+      border: 1px solid rgba(0, 255, 229, 0.18);
+      border-radius: 16px;
+      background: rgba(0, 255, 229, 0.05);
+      overflow: hidden;
+    }
+
+    .custom-package-toggle {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 0;
+      background: transparent;
+      color: var(--accent-strong);
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .custom-package-chevron {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .custom-package-control.is-open .custom-package-chevron {
+      transform: rotate(180deg);
+    }
+
+    .custom-package-form {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px 14px;
+    }
+
+    .custom-package-control.is-open .custom-package-form {
+      display: flex;
+    }
+
+    .custom-package-note,
+    .custom-bonus-hint {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .custom-package-form label {
+      margin-left: auto;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .bonus-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 10px;
+      border: 1px solid rgba(0, 255, 229, 0.25);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.32);
+      color: var(--accent-strong);
+    }
+
+    .bonus-input-wrap input {
+      width: 58px;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      appearance: textfield;
+    }
+
+    .bonus-input-wrap input::-webkit-inner-spin-button,
+    .bonus-input-wrap input::-webkit-outer-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+    }
+
+    .diamond-icon {
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+
+    .custom-bonus-hint {
+      min-width: 96px;
+      color: var(--accent-strong);
+      white-space: nowrap;
+    }
+
     .prem-card table {
       width: 100%;
       border-collapse: collapse;
@@ -677,6 +780,13 @@
       .selection-panel {
         flex-direction: column;
         align-items: flex-start;
+      }
+      .custom-package-form {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .custom-package-form label {
+        margin-left: 0;
       }
       .compare-cards {
         grid-template-columns: 1fr;

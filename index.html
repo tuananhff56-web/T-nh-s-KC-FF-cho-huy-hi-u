@@ -124,7 +124,7 @@
             <div class="title">
               <div class="title-main">
                 <span class="emoji">🔥</span>
-                <span>SO SÁNH NHANH 3 GÓI</span>
+                <span>SO SÁNH NHANH 4 GÓI</span>
               </div>
               <div class="title-sub">
                 Đều đã tính theo nạp thường tối ưu &amp; giá trị kim cương thật. Click vào từng hàng để chọn gói.
@@ -133,6 +133,24 @@
             <div class="label-chip">
               <span class="dot"></span>
               Auto nghiên cứu hộ bạn
+            </div>
+          </div>
+
+          <div class="custom-package-control">
+            <button class="custom-package-toggle" id="customPackageToggle" type="button" aria-expanded="false" aria-controls="customPackageForm">
+              <span>⚙️ Tùy chỉnh KC khuyến mãi theo mốc 100 KC</span>
+              <svg class="custom-package-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <div class="custom-package-form" id="customPackageForm">
+              <div class="custom-package-note">Nhập số KC khuyến mãi để thêm một gói nạp mới. Bảng sẽ tự tính và sắp xếp theo Giá trị.</div>
+              <label for="customBonusKc">KC khuyến mãi</label>
+              <div class="bonus-input-wrap">
+                <input id="customBonusKc" type="number" min="0" step="1" value="130" inputmode="numeric" aria-describedby="customBonusHint">
+                <span class="diamond-icon" aria-label="Kim cương">💎</span>
+              </div>
+              <span class="custom-bonus-hint" id="customBonusHint">Nhận: 230 💎</span>
             </div>
           </div>
 
@@ -221,6 +239,31 @@
                     <span class="badge-star">
                       <span class="icon">⭐</span>
                       159.0%
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="custom-package"
+                    data-name="Nạp 100 KC (+130 KC bonus)"
+                    data-price="20000"
+                    data-kc="230"
+                    data-regular-kc="113"
+                    data-profitkc="117"
+                    data-note="Gói tùy chỉnh theo số KC khuyến mãi bạn nhập.">
+                  <td>
+                    <div class="cell-plan">
+                      <span class="plan-name">Nạp 100 KC (+130 KC bonus)</span>
+                      <span class="plan-note">Tùy chỉnh KC khuyến mãi theo mốc 100 KC</span>
+                    </div>
+                  </td>
+                  <td>20k</td>
+                  <td data-field="kc">230 💎</td>
+                  <td data-field="regular-kc">113 💎</td>
+                  <td data-field="profit-kc"><span style="color: #00ffe5; font-weight: 500;">+117 💎</span></td>
+                  <td>
+                    <span class="badge-star" data-field="value">
+                      <span class="icon">⭐</span>
+                      203.5%
                     </span>
                   </td>
                 </tr>
